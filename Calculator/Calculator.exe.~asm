@@ -1,0 +1,83 @@
+.MODEL SMALL
+.STACK 100H
+
+.DATA
+MSG_PROMPT1 DB 'Enter the first number: $'
+MSG_PROMPT2 DB 'Enter the operator (+ or -): $'
+MSG_PROMPT3 DB 'Enter the second number: $'
+MSG_RESULT DB 'Result: $'
+NUM1 DW ?
+NUM2 DW ?
+OPERATOR DB ?
+
+.CODE
+MAIN PROC
+MOV AX, @DATA
+MOV DS, AX
+
+; Input the first number
+LEA DX, MSG_PROMPT1
+MOV AH, 9
+INT 21H
+
+MOV AH, 1
+INT 21H
+SUB AL, 48       ; Convert ASCII digit to binary
+MOV NUM1, AX
+
+; Input the operator
+LEA DX, MSG_PROMPT2
+MOV AH, 9
+INT 21H
+
+MOV AH, 1
+INT 21H
+MOV AL, OPERATOR
+
+; Input the second number
+LEA DX, MSG_PROMPT3
+MOV AH, 9
+INT 21H
+
+MOV AH, 1
+INT 21H
+SUB AL, 48       ; Convert ASCII digit to binary
+MOV NUM2, AX
+
+; Perform the selected operation (+ or -)
+CMP OPERATOR, '+'
+JE ADD_NUMBERS
+CMP OPERATOR, '-'
+JE SUBTRACT_NUMBERS
+
+ADD_NUMBERS:
+MOV AX, NUM1
+ADD AX, NUM2
+MOV NUM1, AX
+JMP DISPLAY_RESULT
+
+SUBTRACT_NUMBERS:
+MOV AX, NUM1
+SUB AX, NUM2
+MOV NUM1, AX
+
+DISPLAY_RESULT:
+LEA DX, MSG_RESULT
+MOV AH, 9
+INT 21H
+
+MOV AX, NUM1
+ADD AL, 48       ; Convert binary result to ASCII
+MOV DL, AL
+MOV AH, 2
+INT 21H
+
+MOV AH, 4CH
+INT 21H
+MAIN ENDP
+END MAIN
+
+
+
+
+; [SOURCE]: E:\AIUB\Projects\Assembly\Calculator.asm

@@ -1,0 +1,22 @@
+< THE SYMBOL TABLE >  Calculator.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+STACK                    	00000     	-5        	SEGMENT   	(ITSELF)  
+DATA                     	00010     	-5        	SEGMENT   	(ITSELF)  
+MSG_PROMPT1              	00000     	1         	VAR       	data      
+MSG_PROMPT2              	00019     	1         	VAR       	data      
+MSG_PROMPT3              	00037     	1         	VAR       	data      
+MSG_RESULT               	00051     	1         	VAR       	data      
+NUM1                     	0005A     	2         	VAR       	data      
+NUM2                     	0005C     	2         	VAR       	data      
+OPERATOR                 	0005E     	1         	VAR       	data      
+CODE                     	00016     	-5        	SEGMENT   	(ITSELF)  
+MAIN                     	00000     	-1        	NEAR      	code      
+ADD_NUMBERS              	00041     	-1        	LABEL     	code      
+SUBTRACT_NUMBERS         	0004D     	-1        	LABEL     	code      
+DISPLAY_RESULT           	00057     	-1        	LABEL     	code      
+===================================================================================================
+[ 07/10/2023  --  12:25:24 pm ] 
+< END >
+ 

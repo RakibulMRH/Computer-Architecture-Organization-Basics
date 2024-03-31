@@ -1,0 +1,141 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Calculator.exe -- emu8086 assembler version: 4.08  
+ 
+[ 07/10/2023  --  12:25:24 pm ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       .MODEL SMALL
+[   2]        :                                       .STACK 100H
+[   3]        :                                       
+[   4]        :                                       .DATA
+[   5]    0100: 45 6E 74 65 72 20 74 68 65 20 66 69   MSG_PROMPT1 DB 'Enter the first number: $'
+                72 73 74 20 6E 75 6D 62 65 72 3A 20 
+                24                                  
+[   6]    0119: 45 6E 74 65 72 20 74 68 65 20 6F 70   MSG_PROMPT2 DB 'Enter the operator (+ or -): $'
+                65 72 61 74 6F 72 20 28 2B 20 6F 72 
+                20 2D 29 3A 20 24                   
+[   7]    0137: 45 6E 74 65 72 20 74 68 65 20 73 65   MSG_PROMPT3 DB 'Enter the second number: $'
+                63 6F 6E 64 20 6E 75 6D 62 65 72 3A 
+                20 24                               
+[   8]    0151: 52 65 73 75 6C 74 3A 20 24            MSG_RESULT DB 'Result: $'
+[   9]    015A: 00 00                                 NUM1 DW ?
+[  10]    015C: 00 00                                 NUM2 DW ?
+[  11]    015E: 00                                    OPERATOR DB ?
+[  12]        :                                       
+[  13]        :                                       .CODE
+[  14]    0160:                                       MAIN PROC
+[  15]    0160: B8 10 00                              MOV AX, @DATA
+[  16]    0163: 8E D8                                 MOV DS, AX
+[  17]        :                                       
+[  18]        :                                       ; Input the first number
+[  19]    0165: BA 00 00                              LEA DX, MSG_PROMPT1
+[  20]    0168: B4 09                                 MOV AH, 9
+[  21]    016A: CD 21                                 INT 21H
+[  22]        :                                       
+[  23]    016C: B4 01                                 MOV AH, 1
+[  24]    016E: CD 21                                 INT 21H
+[  25]    0170: 2C 30                                 SUB AL, 48       ; Convert ASCII digit to binary
+[  26]    0172: A3 5A 00                              MOV NUM1, AX
+[  27]        :                                       
+[  28]        :                                       ; Input the operator
+[  29]    0175: BA 19 00                              LEA DX, MSG_PROMPT2
+[  30]    0178: B4 09                                 MOV AH, 9
+[  31]    017A: CD 21                                 INT 21H
+[  32]        :                                       
+[  33]    017C: B4 01                                 MOV AH, 1
+[  34]    017E: CD 21                                 INT 21H
+[  35]    0180: A0 5E 00                              MOV AL, OPERATOR
+[  36]        :                                       
+[  37]        :                                       ; Input the second number
+[  38]    0183: BA 37 00                              LEA DX, MSG_PROMPT3
+[  39]    0186: B4 09                                 MOV AH, 9
+[  40]    0188: CD 21                                 INT 21H
+[  41]        :                                       
+[  42]    018A: B4 01                                 MOV AH, 1
+[  43]    018C: CD 21                                 INT 21H
+[  44]    018E: 2C 30                                 SUB AL, 48       ; Convert ASCII digit to binary
+[  45]    0190: A3 5C 00                              MOV NUM2, AX
+[  46]        :                                       
+[  47]        :                                       ; Perform the selected operation (+ or -)
+[  48]    0193: 80 3E 5E 00 2B                        CMP OPERATOR, '+'
+[  49]    0198: 74 07                                 JE ADD_NUMBERS
+[  50]    019A: 80 3E 5E 00 2D                        CMP OPERATOR, '-'
+[  51]    019F: 74 0C                                 JE SUBTRACT_NUMBERS
+[  52]        :                                       
+[  53]    01A1:                                       ADD_NUMBERS:
+[  54]    01A1: A1 5A 00                              MOV AX, NUM1
+[  55]    01A4: 03 06 5C 00                           ADD AX, NUM2
+[  56]    01A8: A3 5A 00                              MOV NUM1, AX
+[  57]    01AB: EB 0A                                 JMP DISPLAY_RESULT
+[  58]        :                                       
+[  59]    01AD:                                       SUBTRACT_NUMBERS:
+[  60]    01AD: A1 5A 00                              MOV AX, NUM1
+[  61]    01B0: 2B 06 5C 00                           SUB AX, NUM2
+[  62]    01B4: A3 5A 00                              MOV NUM1, AX
+[  63]        :                                       
+[  64]    01B7:                                       DISPLAY_RESULT:
+[  65]    01B7: BA 51 00                              LEA DX, MSG_RESULT
+[  66]    01BA: B4 09                                 MOV AH, 9
+[  67]    01BC: CD 21                                 INT 21H
+[  68]        :                                       
+[  69]    01BE: A1 5A 00                              MOV AX, NUM1
+[  70]    01C1: 04 30                                 ADD AL, 48       ; Convert binary result to ASCII
+[  71]    01C3: 8A D0                                 MOV DL, AL
+[  72]    01C5: B4 02                                 MOV AH, 2
+[  73]    01C7: CD 21                                 INT 21H
+[  74]        :                                       
+[  75]    01C9: B4 4C                                 MOV AH, 4CH
+[  76]    01CB: CD 21                                 INT 21H
+[  77]        :                                       MAIN ENDP
+[  78]        :                                       END MAIN
+[  79]        :                                       
+[  80]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: CD      -   bytes on last page (l.byte)
+0003: 01      -   bytes on last page (h.byte)
+0004: 02      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: 68      -   check sum (l.byte)
+0013: A7      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 16      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 16      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================
